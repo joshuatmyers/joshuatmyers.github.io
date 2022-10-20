@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    margin-left: 5px;
+    padding: 0;
+    border: none;
+    font-family: Papyrus, Geneva, sans-serif;
+  }
+  
+  body {
+    font-size: 14px;
+  }
+  h1 {
+    text-align: center;
+  }

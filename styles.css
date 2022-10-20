@@ -12,3 +12,11 @@
   h1 {
     text-align: center;
   }
+  .colouredHeading {
+    border: 5px outset orange;
+    background-color: aliceblue;
+    width: 500px;
+  }
+  .mainDiv {
+    width: 500px;
+  }

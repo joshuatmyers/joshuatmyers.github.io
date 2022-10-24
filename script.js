@@ -4,7 +4,21 @@ window.addEventListener('load', function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const image1 = document.getElementById('image1');
+    var headerImg = new Image();
+    headerImg.onload = function () {
+
+        var originalWidth = headerImg.width;
+        headerImg.width = Math.round((50 * document.body.clientWidth) / 100);
+        headerImg.height = Math.round((headerImg.width * headerImg.height) / originalWidth);
+
+        var logo = {
+            img: headerImg,
+            x: (canvas.width / 2) - (headerImg.width / 2),
+            y: (canvas.height / 2) - (headerImg.height / 2)
+        }
+        ctx.drawImage(logo.img, logo.x, logo.y, logo.img.width, logo.img.height);
+    }
+    headerImg.src = "./heading.png";
 
     class Particle {
         constructor() {
@@ -23,9 +37,7 @@ window.addEventListener('load', function() {
     }
 
     image1.onload = function() {
-        ctx.drawImage(image1, 100, 100);
+        
     };
-
-    ctx.fillRect(20 , 150, 100, 200); 
     
 });

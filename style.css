@@ -1,6 +1,5 @@
 * {
     margin: 0;
-    margin-left: 5px;
     padding: 0;
     border: none;
     font-family: Verdana, Geneva, sans-serif;
@@ -12,11 +11,17 @@
   h1 {
     text-align: center;
   }
-  .colouredHeading {
-    border: 5px outset orange;
-    background-color: aliceblue;
-    width: 500px;
+
+
+  #canvas1 {
+    background: transparent;
   }
-  .mainDiv {
-    width: 500px;
+
+  .controls {
+    position: absolute;
+    z-index: 100;
+  }
+
+  img {
+    display:none;
   }

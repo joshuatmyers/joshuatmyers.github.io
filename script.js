@@ -21,16 +21,35 @@ window.addEventListener('load', function() {
     headerImg.src = "./heading.png";
 
     class Particle {
-        constructor() {
-            this.x = 0;
-            this.y = 0;
-            this.size = 3;
+        constructor(effect) {
+            this.effect = effect;
+            this.x = Math.random() * this.effect.width;
+            this.y = Math.random() * this.effect.height;
+            this.size = 30;
+        }
+        draw(context) {
+            context.fillRect(this.x, this.y, this.size, this.size)
         }
     }
 
     class Effect {
+        constructor(width, height){
+            this.width = width;
+            this.height = height;
+            this.particlesArray = [];
+        }
+        init(){
+            this.particlesArray.push(new Particle(this));
+        }
+        draw(context){
+            this.particlesArray.forEach(particle => particle.draw(context))
 
+        }
     }
+
+    const effect = new Effect(canvas.width, canvas.height);
+    effect.init();
+    effect.draw(ctx);
 
     function animate() {
 

@@ -4,8 +4,6 @@ window.addEventListener('load', function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    
-
     class Particle {
         constructor(effect, x, y, colour) {
             this.effect = effect;
@@ -15,11 +13,11 @@ window.addEventListener('load', function() {
             this.originY = Math.floor(y);
             this.colour = colour;
             this.size = 30;
-            this.vx = 1;
-            this.vy = 1;
+            this.vx = Math.random() * 2 - 1;
+            this.vy = Math.random() * 2 - 1;
         }
         draw(context) {
-            context.fillRect(this.x, this.y, this.size, this.size)
+            context.fillRect(this.x, this.y, this.size, this.size);
         }
         update(){
             this.x += this.vx;
@@ -41,7 +39,7 @@ window.addEventListener('load', function() {
             this.gap = 5;
         }
         init(context){
-            context.drawImage(this.image, this.x, this.y)
+            context.drawImage(this.image, this.x, this.y);
             // points to Uint8ClampedArray with the pixel data
             const pixels = context.getImageData(0, 0, this.width, this.height).data;
             for(let y = 0; y < this.height; y += this.gap){
@@ -55,7 +53,7 @@ window.addEventListener('load', function() {
                     const colour = 'rgb('+ red + ','+ green + ','+ blue + ')';
 
                     if (alpha > 0){
-                        this.particlesArray.push(new Particle(this, x, y, colour))
+                        this.particlesArray.push(new Particle(this, x, y, colour));
                     }
                 }
             }
@@ -70,6 +68,7 @@ window.addEventListener('load', function() {
 
     const effect = new Effect(canvas.width, canvas.height);
     effect.init(ctx);
+    console.log(effect);
     
     
 

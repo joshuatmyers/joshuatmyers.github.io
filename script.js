@@ -21,13 +21,14 @@ window.addEventListener('load', function() {
     headerImg.src = "./heading.png";
 
     class Particle {
-        constructor() {
-            this.x = 0;
-            this.y = 0;
+        constructor(effect) {
+            this.effect = effect;
+            this.x = Math.random() * this.effect.width;
+            this.y = Math.random() * this.effect.height;
             this.size = 30;
         }
-        draw() {
-            ctx.fillRect(this.x, this.y, this.size, this.size)
+        draw(context) {
+            context.fillRect(this.x, this.y, this.size, this.size)
         }
     }
 
@@ -38,17 +39,17 @@ window.addEventListener('load', function() {
             this.particlesArray = [];
         }
         init(){
-            this.particlesArray.push(new Particle());
+            this.particlesArray.push(new Particle(this));
         }
-        draw(){
-            this.particlesArray.forEach(particle => particle.draw())
+        draw(context){
+            this.particlesArray.forEach(particle => particle.draw(context))
 
         }
     }
 
     const effect = new Effect(canvas.width, canvas.height);
     effect.init();
-    effect.draw();
+    effect.draw(ctx);
 
     function animate() {
 

@@ -1,8 +1,12 @@
-// src/App.js
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 import profilePic from './profile.jpg'; // Ensure this image exists in src/
+
+// Images for projects (replace with actual project images)
+import rhythmGameImg from './profile.jpg';
+import spaceflightImg from './profile.jpg';
+import svpImg from './profile.jpg';
 
 // MUI Imports
 import {
@@ -16,11 +20,13 @@ import {
   Divider,
   TextField,
   Button,
-  Typography
+  Typography,
+  Grid,
+  Chip,
 } from '@mui/material';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('experience'); // Use string for original header navigation
+  const [activeTab, setActiveTab] = useState('experience');
   const [darkMode, setDarkMode] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -28,7 +34,7 @@ function App() {
 
   return (
     <div className={`App ${darkMode ? 'dark' : ''}`}>
-      {/* Original Header */}
+      {/* Header */}
       <header className="App-header">
         <h1>Joshua Myers</h1>
         <p>MEng Computer Science, Durham University (2022–2026)</p>
@@ -37,7 +43,7 @@ function App() {
         </button>
       </header>
 
-      {/* Original Navigation */}
+      {/* Navigation */}
       <nav className="App-nav">
         <ul>
           <li className={activeTab === 'about' ? 'active' : ''} onClick={() => setActiveTab('about')}>
@@ -55,6 +61,7 @@ function App() {
         </ul>
       </nav>
 
+      {/* Tab Content */}
       <AnimatePresence mode="wait">
         {activeTab === 'about' && (
           <motion.section
@@ -109,6 +116,7 @@ function App() {
         )}
       </AnimatePresence>
 
+      {/* Project Modal */}
       {selectedProject && (
         <motion.div
           className="project-modal"
@@ -117,20 +125,62 @@ function App() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <Card className="modal-content" sx={{ backgroundColor: darkMode ? '#2c2c2c' : '#fff' }}>
+          <Card className="modal-content enhanced" sx={{ backgroundColor: darkMode ? '#2c2c2c' : '#fff' }}>
+            <CardMedia
+              component="img"
+              image={selectedProject.image}
+              alt={selectedProject.title}
+              sx={{ height: 300, objectFit: 'cover' }}
+            />
             <CardContent>
-              <Typography variant="h5" sx={{ color: darkMode ? '#fff' : '#333' }}>
+              <Typography variant="h5" sx={{ color: darkMode ? '#fff' : '#333', mb: 1 }}>
                 {selectedProject.title}
               </Typography>
               <Typography sx={{ color: darkMode ? '#ccc' : '#666', mb: 2 }}>
                 {selectedProject.description}
               </Typography>
-              <Box sx={{ color: darkMode ? '#ccc' : '#444' }}>{selectedProject.details}</Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" sx={{ color: darkMode ? '#bbb' : '#666' }}>
+                  Highlights:
+                </Typography>
+                <ul style={{ paddingLeft: '1.5rem', color: darkMode ? '#ccc' : '#444' }}>
+                  {selectedProject.highlights.map((highlight, idx) => (
+                    <li key={idx}>{highlight}</li>
+                  ))}
+                </ul>
+              </Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" sx={{ color: darkMode ? '#bbb' : '#666' }}>
+                  Technologies:
+                </Typography>
+                {selectedProject.technologies.map((tech) => (
+                  <Chip
+                    key={tech}
+                    label={tech}
+                    size="small"
+                    sx={{
+                      mr: 1,
+                      mt: 1,
+                      backgroundColor: darkMode ? '#555' : '#e0e0e0',
+                      color: darkMode ? '#fff' : '#333',
+                    }}
+                  />
+                ))}
+              </Box>
               <Button
                 variant="contained"
                 color="primary"
+                href={selectedProject.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ mr: 2 }}
+              >
+                View on GitHub
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
                 onClick={() => setSelectedProject(null)}
-                sx={{ mt: 2 }}
               >
                 Close
               </Button>
@@ -181,7 +231,7 @@ const About = ({ darkMode }) => (
               Libraries & Frameworks
             </Typography>
             <List dense>
-              {['TensorFlow, Keras, PyTorch', 'OpenCV', 'OpenGL, WebGL', 'Pandas, Numpy, Sci-kit learn, Seaborn', 'Node.js, React, Tailwind'].map((lib) => (
+              {['TensorFlow, Keras, PyTorch', 'OpenCV', 'OpenGL, WebGL', 'Pandas, Numpy, Sci-kit learn, Seaborn', 'Node.js, React, Tailwind', 'OpenMP'].map((lib) => (
                 <ListItem key={lib}>
                   <ListItemText primary={lib} primaryTypographyProps={{ color: darkMode ? '#ccc' : '#444' }} />
                 </ListItem>
@@ -241,85 +291,117 @@ const Work = ({ setSelectedProject, darkMode }) => {
   const projects = [
     {
       title: 'Neural Network Plays Rhythm Game',
-      description: 'A convolutional neural network (CNN) to automate rhythm game gameplay with over 90% accuracy.',
-      details: (
-        <>
-          <Typography>Designed a CNN architecture using Python, TensorFlow, Keras, and OpenCV to automate gameplay with a performance of 90%+ accuracy on unseen data.</Typography>
-          <List dense>
-            <ListItem><ListItemText primary="Engineered data preprocessing pipelines with OpenCV for optimal training input." /></ListItem>
-            <ListItem><ListItemText primary="Applied advanced masking techniques to enhance model generalization." /></ListItem>
-            <ListItem><ListItemText primary="Optimized computational performance with pandas, reducing processing time." /></ListItem>
-          </List>
-          <Typography><strong>Technologies:</strong> Python, TensorFlow, Keras, OpenCV, Pandas</Typography>
-        </>
-      ),
+      description: 'A convolutional neural network (CNN) automating rhythm game gameplay with over 90% accuracy.',
+      image: rhythmGameImg,
+      github: 'https://github.com/yourusername/rhythm-game-cnn',
+      technologies: ['Python', 'TensorFlow', 'Keras', 'OpenCV', 'Pandas'],
+      highlights: [
+        'Designed CNN architecture achieving 90%+ accuracy on unseen data.',
+        'Engineered preprocessing pipelines with OpenCV for optimal input.',
+        'Optimized performance with Pandas, reducing processing time.',
+      ],
     },
     {
       title: 'Durham SpaceFlight',
-      description: 'Co-led the payload team for a national rocketry competition, achieving a top 10% placement.',
-      details: (
-        <>
-          <Typography>Co-led the payload team in designing a rocket and programming a flight computer for the National Rocketry Competition.</Typography>
-          <List dense>
-            <ListItem><ListItemText primary="Designed rocket with an apogee of 250m using OpenRocket and KiCad." /></ListItem>
-            <ListItem><ListItemText primary="Programmed flight computer and assisted with live GPS tracking for a high-altitude balloon." /></ListItem>
-            <ListItem><ListItemText primary="Placed in the top 10% among 100+ teams, including postgraduate competitors." /></ListItem>
-          </List>
-          <Typography><strong>Technologies:</strong> C, OpenRocket, KiCad</Typography>
-        </>
-      ),
+      description: 'Co-led payload team for a national rocketry competition, placing in the top 10%.',
+      image: spaceflightImg,
+      github: 'https://github.com/yourusername/durham-spaceflight',
+      technologies: ['C', 'OpenRocket', 'KiCad'],
+      highlights: [
+        'Designed rocket with 250m apogee using OpenRocket and KiCad.',
+        'Programmed flight computer with live GPS tracking.',
+        'Achieved top 10% placement among 100+ teams.',
+      ],
     },
     {
       title: 'Shortest Vector Problem',
-      description: 'Optimized an LLL reduction algorithm in C++ for lattice reduction, achieving a 1000x improvement.',
-      details: (
-        <>
-          <Typography>Implemented and optimized a cutting-edge LLL reduction algorithm from a research paper to solve the shortest vector problem in lattice reduction.</Typography>
-          <List dense>
-            <ListItem><ListItemText primary="Utilized optimization techniques like search space pruning and extensive profiling." /></ListItem>
-            <ListItem><ListItemText primary="Achieved over a 1000x performance improvement over a naive brute-force implementation." /></ListItem>
-          </List>
-          <Typography><strong>Technologies:</strong> C++</Typography>
-        </>
-      ),
+      description: 'Optimized LLL reduction algorithm in C++ for lattice reduction, with a 1000x improvement.',
+      image: svpImg,
+      github: 'https://github.com/yourusername/shortest-vector-problem',
+      technologies: ['C++'],
+      highlights: [
+        'Implemented LLL algorithm with search space pruning.',
+        'Achieved 1000x performance boost over naive brute-force.',
+        'Profiled extensively for optimization.',
+      ],
     },
   ];
 
   return (
     <Box sx={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: darkMode ? '#fff' : '#333' }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ fontWeight: 'bold', color: darkMode ? '#fff' : '#333' }}
+      >
         Projects
       </Typography>
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+      <Grid container spacing={3}>
         {projects.map((project, index) => (
-          <Card
-            key={index}
-            sx={{
-              backgroundColor: darkMode ? '#2c2c2c' : '#fff',
-              boxShadow: 3,
-              borderRadius: 2,
-              transition: 'transform 0.3s',
-              '&:hover': { transform: 'translateY(-5px)' },
-            }}
-          >
-            <CardContent>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: darkMode ? '#fff' : '#333' }}>
-                {project.title}
-              </Typography>
-              <Typography sx={{ color: darkMode ? '#ccc' : '#666', mb: 2 }}>
-                {project.description}
-              </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Card
+                sx={{
+                  backgroundColor: darkMode ? '#2c2c2c' : '#fff',
+                  boxShadow: 3,
+                  borderRadius: 2,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  cursor: 'pointer',
+                  transition: 'box-shadow 0.3s ease',
+                  '&:hover': {
+                    boxShadow: 6,
+                  },
+                }}
                 onClick={() => setSelectedProject(project)}
               >
-                Learn More
-              </Button>
-            </CardContent>
-          </Card>
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: 'bold', color: darkMode ? '#fff' : '#333', mb: 1 }}
+                  >
+                    {project.title}
+                  </Typography>
+                  <Typography sx={{ color: darkMode ? '#ccc' : '#666', mb: 2 }}>
+                    {project.description}
+                  </Typography>
+                  <Box sx={{ mb: 2 }}>
+                    {project.technologies.map((tech) => (
+                      <Chip
+                        key={tech}
+                        label={tech}
+                        size="small"
+                        sx={{
+                          mr: 1,
+                          mb: 1,
+                          backgroundColor: darkMode ? '#555' : '#e0e0e0',
+                          color: darkMode ? '#fff' : '#333',
+                        }}
+                      />
+                    ))}
+                  </Box>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedProject(project);
+                    }}
+                    sx={{ mt: 'auto' }}
+                  >
+                    Learn More
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
         ))}
-      </Box>
+      </Grid>
     </Box>
   );
 };

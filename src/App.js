@@ -167,16 +167,27 @@ function App() {
                   />
                 ))}
               </Box>
-              <Button
-                variant="contained"
-                color="primary"
-                href={selectedProject.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{ mr: 2 }}
-              >
-                View on GitHub
-              </Button>
+              {selectedProject.github ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  href={selectedProject.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{ mr: 2 }}
+                >
+                  View on GitHub
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  href={`mailto:jtmyerswork@gmail.com?subject=Request%20Code%20for%20${encodeURIComponent(selectedProject.title)}`}
+                  sx={{ mr: 2 }}
+                >
+                  Request Code
+                </Button>
+              )}
               <Button
                 variant="contained"
                 color="secondary"
@@ -288,12 +299,12 @@ const About = ({ darkMode }) => (
 );
 
 const Work = ({ setSelectedProject, darkMode }) => {
-  const projects = [
+  const completedProjects = [
     {
       title: 'Neural Network Plays Rhythm Game',
       description: 'A convolutional neural network (CNN) automating rhythm game gameplay with over 90% accuracy.',
       image: rhythmGameImg,
-      github: 'https://github.com/yourusername/rhythm-game-cnn',
+      github: 'https://github.com/<username>/rhythm-game-cnn', // Replace <username>
       technologies: ['Python', 'TensorFlow', 'Keras', 'OpenCV', 'Pandas'],
       highlights: [
         'Designed CNN architecture achieving 90%+ accuracy on unseen data.',
@@ -305,7 +316,7 @@ const Work = ({ setSelectedProject, darkMode }) => {
       title: 'Durham SpaceFlight',
       description: 'Co-led payload team for a national rocketry competition, placing in the top 10%.',
       image: spaceflightImg,
-      github: 'https://github.com/yourusername/durham-spaceflight',
+      github: null, // Replace <username>
       technologies: ['C', 'OpenRocket', 'KiCad'],
       highlights: [
         'Designed rocket with 250m apogee using OpenRocket and KiCad.',
@@ -317,7 +328,7 @@ const Work = ({ setSelectedProject, darkMode }) => {
       title: 'Shortest Vector Problem',
       description: 'Optimized LLL reduction algorithm in C++ for lattice reduction, with a 1000x improvement.',
       image: svpImg,
-      github: 'https://github.com/yourusername/shortest-vector-problem',
+      github: 'https://github.com/<username>/shortest-vector-problem', // Replace <username>
       technologies: ['C++'],
       highlights: [
         'Implemented LLL algorithm with search space pruning.',
@@ -325,16 +336,91 @@ const Work = ({ setSelectedProject, darkMode }) => {
         'Profiled extensively for optimization.',
       ],
     },
+    {
+      title: 'Parallel N-Body Simulation (Vectorization)',
+      description: 'Optimized an N-body simulation in C++ with vectorization, achieving a 25% speedup.',
+      image: profilePic, // Replace with actual project image
+      github: null, // Replace <username>
+      technologies: ['C++', 'VTune', 'GCC', 'OpenMP', 'AVX'],
+      highlights: [
+        'Profiled with VTune to target force_calculation and update_body hotspots.',
+        'Used pointer dereferencing and loop merging for effective vectorization.',
+        'Reduced runtime from 8.40s to 6.26s for 1000 bodies.',
+      ],
+    },
+    {
+      title: 'Discrete Logarithm Solver',
+      description: 'Implemented a hybrid algorithm combining Pohlig-Hellman and Pollard-Rho for discrete logarithms.',
+      image: profilePic, // Replace with actual project image
+      github: null, // Replace <username>
+      technologies: ['C++', 'Pollard-Rho', 'Pohlig-Hellman', 'CRT'],
+      highlights: [
+        'Combined Pohlig-Hellman and Pollard-Rho for efficient sub-problem solving.',
+        'Reduced runtime from O(p) to O(p_i^c_i) for p-smooth factors.',
+        'Handled primes up to 50 digits with probabilistic factorization.',
+      ],
+    },
+    {
+      title: 'Parallel N-Body Simulation (Multithreading)',
+      description: 'Parallelized an N-body simulation on Hamilton supercomputer, achieving up to 48x speedup.',
+      image: profilePic, // Replace with actual project image
+      github: null, // Replace <username>
+      technologies: ['C++', 'OpenMP', 'AVX2', 'VTune'],
+      highlights: [
+        'Parallelized force calculations with OpenMP on up to 64 cores.',
+        'Achieved 48.59x speedup for 8000 particles, with strong scaling.',
+        'Optimized to minimize data races and overheads.',
+      ],
+    },
+    {
+      title: 'Efficient CNN and DCGAN Models',
+      description: 'Developed lightweight CNN (86% accuracy) and DCGAN (FID 57.49) for image tasks.',
+      image: profilePic, // Replace with actual project image
+      github: null, // Replace <username>
+      technologies: ['Python', 'PyTorch', 'EfficientNet', 'MobileNet', 'DCGAN'],
+      highlights: [
+        'Designed CNN with MBConv blocks for 86% accuracy on addNIST.',
+        'Built DCGAN with FID 57.49 on CIFAR-100, using ConvTranspose2d.',
+        'Optimized training with Adam, OneCycleLR, and label smoothing.',
+      ],
+    },
+    {
+      title: 'Multi-User Chat and File Server',
+      description: 'Built a multi-threaded TCP server for real-time chat and file sharing between clients.',
+      image: profilePic, // Replace with actual project image (e.g., screenshot of chat or file transfer)
+      github: 'https://github.com/<username>/chat-file-server', // Replace <username>
+      technologies: ['Python', 'Socket', 'Threading', 'Logging'],
+      highlights: [
+        'Implemented broadcast and unicast messaging with command-line interface.',
+        'Enabled file listing and downloading from server-side storage.',
+        'Logged all interactions (e.g., connections, messages) to a server-side log file.',
+      ],
+    },
   ];
 
-  return (
-    <Box sx={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+  const inProgressProjects = [
+    {
+      title: 'Algorithmic Trading Platform',
+      description: 'Creating a real-time trading platform with machine learning predictions.',
+      image: profilePic, // Replace with actual project image
+      github: null, // Replace <username>
+      technologies: ['Python', 'C++', 'Pandas', 'PyTorch'],
+      highlights: [
+        'Integrating live market data feeds and ML-based trade signals.',
+        'Currently refining backtesting module for strategy evaluation.',
+        'Target: deployable prototype by end of term.',
+      ],
+    },
+  ];
+
+  const renderProjectSection = (title, projects) => (
+    <>
       <Typography
-        variant="h4"
+        variant="h5"
         gutterBottom
-        sx={{ fontWeight: 'bold', color: darkMode ? '#fff' : '#333' }}
+        sx={{ fontWeight: 'bold', color: darkMode ? '#fff' : '#333', mt: 4 }}
       >
-        Projects
+        {title}
       </Typography>
       <Grid container spacing={3}>
         {projects.map((project, index) => (
@@ -402,6 +488,20 @@ const Work = ({ setSelectedProject, darkMode }) => {
           </Grid>
         ))}
       </Grid>
+    </>
+  );
+
+  return (
+    <Box sx={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ fontWeight: 'bold', color: darkMode ? '#fff' : '#333' }}
+      >
+        Projects
+      </Typography>
+      {renderProjectSection('Completed Projects', completedProjects)}
+      {renderProjectSection('In-Progress Projects', inProgressProjects)}
     </Box>
   );
 };
